@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Demo for the @devwithbobby/clickhouse Convex component."
+    />
+    <title>Convex ClickHouse Component Demo</title>
+  </head>
+  <body>
+    <main id="app">
+      <section class="shell">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Convex Component</p>
+            <h1>ClickHouse Analytics Pipeline</h1>
+          </div>
+          <a class="repo-link" href="https://github.com/robertalv/clickhouse">
+            GitHub
+          </a>
+        </header>
+
+        <section class="dashboard" aria-label="Interactive demo dashboard">
+          <div class="panel event-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Simulated Mutation</p>
+                <h2>Track an Event</h2>
+              </div>
+              <span id="bufferState" class="status-pill">buffer ready</span>
+            </div>
+
+            <form id="eventForm" class="event-form">
+              <label>
+                Event
+                <select id="eventName">
+                  <option value="signup">signup</option>
+                  <option value="checkout_started">checkout_started</option>
+                  <option value="plan_upgraded">plan_upgraded</option>
+                  <option value="dashboard_viewed">dashboard_viewed</option>
+                </select>
+              </label>
+              <label>
+                Workspace ID
+                <input id="workspaceId" value="workspace_demo" />
+              </label>
+              <button type="submit">Buffer event</button>
+            </form>
+
+            <div class="actions-row">
+              <button id="flushButton" class="secondary" type="button">
+                Flush to ClickHouse
+              </button>
+              <button id="resetButton" class="ghost" type="button">Reset</button>
+            </div>
+          </div>
+
+          <div class="panel metrics-panel">
+            <p class="eyebrow">Component State</p>
+            <div class="metrics-grid">
+              <article>
+                <span id="pendingCount">0</span>
+                <p>Pending</p>
+              </article>
+              <article>
+                <span id="flushedCount">0</span>
+                <p>Flushed</p>
+              </article>
+              <article>
+                <span id="failedCount">0</span>
+                <p>Failed</p>
+              </article>
+            </div>
+            <div class="pipeline" aria-label="Pipeline">
+              <div>Convex mutation</div>
+              <div>Component buffer</div>
+              <div>ClickHouse table</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel">
+            <p class="eyebrow">Bring Your Own Credentials</p>
+            <h2>Environment</h2>
+            <p>
+              This live page is safe to share because it does not collect or
+              store credentials. Your deployed Convex app provides its own
+              ClickHouse HTTP endpoint, user, and password.
+            </p>
+            <pre><code>CLICKHOUSE_URL=https://example.clickhouse.cloud:8443
+CLICKHOUSE_USER=default
+CLICKHOUSE_PASSWORD=your_password</code></pre>
+          </article>
+
+          <article class="panel">
+            <p class="eyebrow">Install</p>
+            <h2>Mount the Component</h2>
+            <pre><code>npm install @devwithbobby/clickhouse</code></pre>
+            <pre><code>import { defineApp } from "convex/server";
+import clickhouse from "@devwithbobby/clickhouse/convex.config.js";
+
+const app = defineApp();
+app.use(clickhouse);
+
+export default app;</code></pre>
+          </article>
+        </section>
+
+        <section class="panel code-panel">
+          <div>
+            <p class="eyebrow">Example App Code</p>
+            <h2>Track and Flush Events</h2>
+          </div>
+          <pre><code>import { ClickHouse } from "@devwithbobby/clickhouse";
+import { components } from "./_generated/api";
+
+export const clickhouse = new ClickHouse(components.clickhouse, {
+  credentials: () => ({
+    url: process.env.CLICKHOUSE_URL!,
+    user: process.env.CLICKHOUSE_USER!,
+    password: process.env.CLICKHOUSE_PASSWORD!,
+  }),
+});
+
+await clickhouse.insert(ctx, "events", [{
+  workspace_id: "workspace_demo",
+  event: "signup",
+  created_at: Date.now(),
+}]);
+
+await clickhouse.flush(ctx);</code></pre>
+        </section>
+
+        <section class="panel log-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Flush Log</p>
+              <h2>Recent Activity</h2>
+            </div>
+          </div>
+          <ul id="activityLog" class="activity-log">
+            <li>No events buffered yet.</li>
+          </ul>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

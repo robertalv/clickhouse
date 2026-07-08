@@ -2,6 +2,19 @@
 
 Convex component for buffering analytics events in Convex and flushing them to ClickHouse Cloud over the ClickHouse HTTP API.
 
+## Demo
+
+Live demo: https://robertalv.github.io/clickhouse/
+
+The demo is a static example site. It does not collect credentials or connect to a shared ClickHouse account. Users bring their own Convex deployment and ClickHouse HTTP credentials.
+
+Run it locally:
+
+```sh
+npm install
+npm run demo:dev
+```
+
 ## Install
 
 ```sh
