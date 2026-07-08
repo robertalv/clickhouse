@@ -1,5 +1,7 @@
 # @devwithbobby/clickhouse
 
+[![Convex Component](https://www.convex.dev/components/badge/devwithbobby/clickhouse)](https://www.convex.dev/components/devwithbobby/clickhouse)
+
 Convex component for buffering analytics events in Convex and flushing them to ClickHouse Cloud over the ClickHouse HTTP API.
 
 ## Demo
