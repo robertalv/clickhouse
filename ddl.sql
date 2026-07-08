@@ -1,4 +1,4 @@
--- ClickHouse Cloud DDL for Kato Analytics
+-- ClickHouse Cloud DDL for Convex Analytics
 -- Run this in your ClickHouse Cloud console to create the required tables.
 --
 -- Engine: ReplacingMergeTree (idempotent re-inserts, deduplication by activity_id)
