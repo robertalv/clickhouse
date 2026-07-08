@@ -1,0 +1,83 @@
+{
+  "name": "@devwithbobby/clickhouse",
+  "version": "0.0.1",
+  "description": "Convex component for integrating with ClickHouse Cloud analytics",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "npm@10.9.2",
+  "main": "dist/client/index.js",
+  "types": "dist/client/index.d.ts",
+  "module": "dist/client/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robertalv/clickhouse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/robertalv/clickhouse/issues"
+  },
+  "homepage": "https://github.com/robertalv/clickhouse#readme",
+  "keywords": [
+    "convex",
+    "convex-component",
+    "clickhouse",
+    "analytics",
+    "events"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "src/client",
+    "src/component",
+    "src/test.ts",
+    "src/types.ts",
+    "!src/**/*.test.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/client/index.d.ts",
+      "default": "./dist/client/index.js"
+    },
+    "./convex.config": {
+      "types": "./dist/component/convex.config.d.ts",
+      "default": "./dist/component/convex.config.js"
+    },
+    "./convex.config.js": {
+      "types": "./dist/component/convex.config.d.ts",
+      "default": "./dist/component/convex.config.js"
+    },
+    "./_generated/component": {
+      "types": "./dist/component/_generated/component.d.ts"
+    },
+    "./_generated/component.js": {
+      "types": "./dist/component/_generated/component.d.ts"
+    },
+    "./test": {
+      "types": "./src/test.ts",
+      "default": "./src/test.ts"
+    }
+  },
+  "scripts": {
+    "codegen": "convex codegen --component-dir src/component",
+    "build": "tsc --project tsconfig.build.json",
+    "build:watch": "tsc --project tsconfig.build.json --watch",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "verify": "npm run check-types && npm run build && npm test && npm pack --dry-run",
+    "prepublishOnly": "npm run verify"
+  },
+  "peerDependencies": {
+    "convex": "^1.42.1"
+  },
+  "devDependencies": {
+    "convex": "1.42.1",
+    "convex-test": "0.0.54",
+    "typescript": "7.0.2",
+    "vite": "7.3.6",
+    "vitest": "4.1.10"
+  }
+}
